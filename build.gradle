@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2018 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -49,7 +49,7 @@ task prepareDist() {
   }
 }
 
-ext.copyright = '<i>Copyright &#169; 2017-2018 Chris K Wensel. All Rights Reserved.</i>'
+ext.copyright = '<i>Copyright &#169; 2018 Chris K Wensel. All Rights Reserved.</i>'
 
 subprojects {
 
@@ -76,7 +76,7 @@ subprojects {
     bintrayKey = repoPassword
 
     org = 'heretical'
-    repo =  isFinalRelease ? 'release' : 'wip'
+    repo = isFinalRelease ? 'release' : 'wip'
 
     overrideOnUpload = true
 
@@ -88,7 +88,7 @@ subprojects {
     vcsUrl = 'https://github.com/Heretical/pointer-path.git'
   }
 
-  task bintrayPublishBuild( dependsOn: [bintrayUpload, bintrayPublish]) {
+  task bintrayPublishBuild( dependsOn: [bintrayUpload, bintrayPublish] ) {
   }
 
   javadoc.dependsOn << prepareDist
@@ -176,8 +176,8 @@ subprojects {
         from components.java
 
         pom {
-          name = 'Pointer-Path'
-          description = 'An API for building nested data structures.'
+          name = 'Mini-Parsers'
+          description = 'An API for parsing small things.'
           url = 'http://www.heretical.io/'
           inceptionYear = '2017'
           licenses {
@@ -195,7 +195,7 @@ subprojects {
             }
           }
           scm {
-            url = 'https://github.com/Heretical/pointer-path.git'
+            url = 'https://github.com/Heretical/mini-parsers.git'
           }
         }
       }
@@ -205,7 +205,7 @@ subprojects {
 
 task allJavadoc( type: Javadoc, dependsOn: subprojects.javadoc ) {
 
-  title = "Cascading ${releaseVersion}"
+  title = "Mini-Parsers ${releaseVersion}"
   destinationDir = file( "${distDir}/javadoc/all/" )
 
   source subprojects.javadoc.source

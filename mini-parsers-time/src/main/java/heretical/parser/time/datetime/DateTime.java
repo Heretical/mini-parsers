@@ -6,7 +6,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-include 'mini-parsers-common'
-include 'mini-parsers-time'
+package heretical.parser.time.datetime;
 
-rootProject.name = 'mini-parsers'
+import java.time.Instant;
+
+import heretical.parser.time.Context;
+
+/**
+ *
+ */
+public abstract class DateTime
+  {
+  public abstract Instant toInstant( Context context );
+  }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2018 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -35,8 +35,8 @@ uploadShadow {
     }
 
     pom.project {
-      inceptionYear '2017'
-      url 'http://www.cascding.org/'
+      inceptionYear '2018'
+      url 'http://www.heretical.io/'
     }
   }
   deployer.pom.whenConfigured {pom -> pom.dependencies = []}
@@ -47,8 +47,8 @@ task installShadowArchives( type: Upload ) {
   def installer = repositories.mavenInstaller {
     configuration = configurations.shadedArchives
     pom.project {
-      inceptionYear '2017'
-      url 'http://www.cascading.org/'
+      inceptionYear '2018'
+      url 'http://www.heretical.io/'
     }
   }
   installer.pom.whenConfigured {pom -> pom.dependencies = []}
