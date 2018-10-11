@@ -172,6 +172,8 @@ subprojects {
       mavenJava( MavenPublication ) {
         artifact sourcesJar
         artifact javadocJar
+        artifact testsJar
+        artifact testSourcesJar
 
         from components.java
 
