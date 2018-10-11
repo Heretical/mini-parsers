@@ -83,9 +83,9 @@ subprojects {
     publication = 'mavenJava'
 
     licenses = ['MPL-2.0']
-    websiteUrl = 'http://www.heretical.io/projects/pointer-path/'
-    issueTrackerUrl = 'https://github.com/Heretical/pointer-path/issues'
-    vcsUrl = 'https://github.com/Heretical/pointer-path.git'
+    websiteUrl = 'http://www.heretical.io/projects/mini-parsers/'
+    issueTrackerUrl = 'https://github.com/Heretical/mini-parsers/issues'
+    vcsUrl = 'https://github.com/Heretical/mini-parsers.git'
   }
 
   task bintrayPublishBuild( dependsOn: [bintrayUpload, bintrayPublish] ) {
@@ -94,7 +94,7 @@ subprojects {
   javadoc.dependsOn << prepareDist
 
   javadoc {
-    title = "Pointer Path ${releaseVersion}"
+    title = "Mini Parsers ${releaseVersion}"
     destinationDir = file( "${distDir}/javadoc/${project.name}" )
 
     failOnError = false
