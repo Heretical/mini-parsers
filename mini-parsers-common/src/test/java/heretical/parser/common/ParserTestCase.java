@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 /**
  *
  */
-public abstract class ParserTestCase<P extends BaseParser>
+public abstract class ParserTestCase<V, P extends BaseParser<V>>
   {
   private static final Logger LOG = LoggerFactory.getLogger( ParserTestCase.class );
 
@@ -36,7 +36,6 @@ public abstract class ParserTestCase<P extends BaseParser>
   private boolean printProfile = false;
   private boolean printTree = false;
   private P parser;
-  private ParseRunner<?> runner;
 
   public ParserTestCase( boolean useTracingRunning )
     {
@@ -46,14 +45,17 @@ public abstract class ParserTestCase<P extends BaseParser>
   @Before
   public void setUp() throws Exception
     {
-    parser = (P) Parboiled.createParser( getParserGrammarClass() );
+    parser = Parboiled.createParser( getParserGrammarClass() );
+    }
 
+  protected ParseRunner<V> getRunner()
+    {
     if( printProfile )
-      runner = new ProfilingParseRunner<>( getGrammarRoot(parser) );
+      return new ProfilingParseRunner<>( getGrammarRoot( parser ) );
     else if( useTracingRunning )
-      runner = new TracingParseRunner<>( getGrammarRoot(parser) );
+      return new TracingParseRunner<>( getGrammarRoot( parser ) );
     else
-      runner = new ReportingParseRunner<>( getGrammarRoot(parser) );
+      return new ReportingParseRunner<>( getGrammarRoot( parser ) );
     }
 
   protected abstract Rule getGrammarRoot( P parser );
@@ -63,23 +65,19 @@ public abstract class ParserTestCase<P extends BaseParser>
   @After
   public void tearDown() throws Exception
     {
+    ParseRunner<V> runner = getRunner();
     if( printProfile && runner instanceof ProfilingParseRunner )
       System.out.println( ( (ProfilingParseRunner) runner ).getReport().print() );
     }
 
-  protected <T> ParsingResult<T> assertParse( String query )
+  protected ParsingResult<V> assertParse( String query )
     {
     return assertParse( query, true );
     }
 
-  protected void assertParseFailed( String query )
+  protected ParsingResult<V> assertParse( String query, boolean matched )
     {
-    assertParse( query, false );
-    }
-
-  protected <T> ParsingResult<T> assertParse( String query, boolean matched )
-    {
-    ParsingResult<T> result = (ParsingResult<T>) runner.run( query );
+    ParsingResult<V> result = getRunner().run( query );
 
     if( printTree )
       {
@@ -95,5 +93,10 @@ public abstract class ParserTestCase<P extends BaseParser>
     assertEquals( matched, result.matched );
 
     return result;
+    }
+
+  protected void assertNotMatched( String query )
+    {
+    assertParse( query, false );
     }
   }

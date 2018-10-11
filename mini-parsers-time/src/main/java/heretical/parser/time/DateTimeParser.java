@@ -8,29 +8,13 @@
 
 package heretical.parser.time;
 
-import heretical.parser.common.ParserSyntaxException;
-import heretical.parser.common.Result;
-import heretical.parser.time.datetime.DateTime;
 import heretical.parser.time.grammar.DateTimeGrammar;
-import org.parboiled.Parboiled;
-import org.parboiled.Rule;
-import org.parboiled.errors.ErrorUtils;
-import org.parboiled.parserunners.ParseRunner;
-import org.parboiled.parserunners.ReportingParseRunner;
-import org.parboiled.support.ParsingResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- *  This class is not thread-safe.
+ * This class is not thread-safe.
  */
-public abstract class DateTimeParser
+public abstract class DateTimeParser extends BaseDateTimeParser<DateTimeGrammar>
   {
-  private static final Logger LOG = LoggerFactory.getLogger( DateTimeParser.class );
-
-  protected Context context = new Context();
-  protected ParseRunner<DateTime> runner;
-
   public DateTimeParser( Context context )
     {
     this.context = context;
@@ -40,43 +24,9 @@ public abstract class DateTimeParser
     {
     }
 
-  protected DateTimeGrammar createParser()
+  @Override
+  protected Class<DateTimeGrammar> getParserClass()
     {
-    return Parboiled.createParser( DateTimeGrammar.class );
+    return DateTimeGrammar.class;
     }
-
-  protected ParseRunner<DateTime> getParserRunner()
-    {
-    if( runner == null )
-      runner = createParserRunner( getGrammar() );
-
-    return runner;
-    }
-
-  protected ReportingParseRunner<DateTime> createParserRunner( Rule grammar )
-    {
-    return new ReportingParseRunner<>( grammar );
-    }
-
-  public Result<DateTime> parse( String timeString )
-    {
-    long start = System.currentTimeMillis();
-
-    ParsingResult<DateTime> result = getParserRunner().run( timeString );
-
-    long duration = System.currentTimeMillis() - start;
-
-    Result<DateTime> parseResult = new Result<>( result, duration );
-
-    if( result.hasErrors() )
-      {
-      LOG.warn( ErrorUtils.printParseErrors( result ) );
-
-      throw new ParserSyntaxException( parseResult );
-      }
-
-    return parseResult;
-    }
-
-  protected abstract Rule getGrammar();
   }

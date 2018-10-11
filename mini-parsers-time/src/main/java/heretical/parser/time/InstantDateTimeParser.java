@@ -8,6 +8,7 @@
 
 package heretical.parser.time;
 
+import heretical.parser.time.grammar.DateTimeGrammar;
 import org.parboiled.Rule;
 
 /**
@@ -25,8 +26,8 @@ public class InstantDateTimeParser extends DateTimeParser
     }
 
   @Override
-  protected Rule getGrammar()
+  protected Rule getGrammar( DateTimeGrammar parser )
     {
-    return createParser().InstantDateTimeMatch();
+    return parser.InstantDateTimeEOI();
     }
   }

@@ -47,6 +47,11 @@ public class Context
     setLocale( locale );
     }
 
+  public Context( Clock clock )
+    {
+    this.clock = clock;
+    }
+
   public Clock getClock()
     {
     return clock;

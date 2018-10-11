@@ -57,7 +57,7 @@ public class ParserSyntaxException extends RuntimeException
     if( result == null )
       return null;
 
-    return result.getResult().parseErrors;
+    return result.getParsingResult().parseErrors;
     }
 
   // Parboiled doesn't provide a clean error message
@@ -83,7 +83,7 @@ public class ParserSyntaxException extends RuntimeException
 
   private static String getSyntaxError( Result result )
     {
-    return ErrorUtils.printParseErrors( result.getResult() );
+    return ErrorUtils.printParseErrors( result.getParsingResult() );
     }
 
   public static String makeMessage( List<String> errorMessages )

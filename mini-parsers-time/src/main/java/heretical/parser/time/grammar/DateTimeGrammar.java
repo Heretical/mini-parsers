@@ -37,10 +37,15 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTime>
   public Rule Root()
     {
     return FirstOf(
-      UnaryRelativeDateTime(),
-      InstantDateTimeMatch(),
-      RelativeDateTime()
+      UnaryRelativeDateTimeEOI(),
+      InstantDateTimeEOI(),
+      RelativeDateTimeEOI()
     );
+    }
+
+  public Rule InstantDateTimeEOI()
+    {
+    return Sequence( InstantDateTimeMatch(), EOI );
     }
 
   public Rule InstantDateTimeMatch()
@@ -142,6 +147,11 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTime>
     return result;
     }
 
+  public Rule RelativeDateTimeEOI()
+    {
+    return Sequence( RelativeDateTime(), EOI );
+    }
+
   Rule UnaryRelativeDateTime()
     {
     return FirstOf(
@@ -201,7 +211,12 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTime>
     );
     }
 
-  Rule RelativeDateTime()
+  public Rule UnaryRelativeDateTimeEOI()
+    {
+    return Sequence( UnaryRelativeDateTime(), EOI );
+    }
+
+  public Rule RelativeDateTime()
     {
     return Sequence(
       FirstOf(
@@ -245,7 +260,7 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTime>
 
   Rule RelativeLastUnitSymbol( CalendarUnits unit )
     {
-    Var<OrdinalDateTime> var = new Var( new OrdinalDateTime(unit) );
+    Var<OrdinalDateTime> var = new Var( new OrdinalDateTime( unit ) );
     StringVar value = new StringVar();
 
     return Sequence(

@@ -11,6 +11,7 @@ package heretical.parser.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.parboiled.errors.ErrorUtils;
 import org.parboiled.errors.ParseError;
 import org.parboiled.support.ParsingResult;
 
@@ -28,7 +29,7 @@ public class Result<T>
     this.parseDuration = parseDuration;
     }
 
-  public ParsingResult<T> getResult()
+  public ParsingResult<T> getParsingResult()
     {
     return result;
     }
@@ -38,9 +39,43 @@ public class Result<T>
     return parseDuration;
     }
 
+  public boolean matched()
+    {
+    return result.matched;
+    }
+
   public boolean hasErrors()
     {
     return result.hasErrors();
+    }
+
+  public T getResultValue()
+    {
+    return result.resultValue;
+    }
+
+  public int getNumErrors()
+    {
+    if( !result.hasErrors() )
+      return 0;
+
+    return result.parseErrors.size();
+    }
+
+  public int getErrorStartIndex( int index )
+    {
+    if( !result.hasErrors() )
+      throw new IllegalStateException( "has no errors" );
+
+    return result.parseErrors.get( index ).getStartIndex();
+    }
+
+  public int getErrorEndIndex( int index )
+    {
+    if( !result.hasErrors() )
+      throw new IllegalStateException( "has no errors" );
+
+    return result.parseErrors.get( index ).getEndIndex();
     }
 
   public List<String> getErrorMessages()
@@ -53,8 +88,8 @@ public class Result<T>
     return messages;
     }
 
-  public T getResultValue()
+  public String prettyPrintErrors()
     {
-    return result.resultValue;
+    return ErrorUtils.printParseErrors( result );
     }
   }

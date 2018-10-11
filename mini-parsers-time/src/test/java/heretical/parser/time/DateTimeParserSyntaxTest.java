@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 /**
  *
  */
-public class DateTimeParserSyntaxTest extends ParserTestCase<DateTimeGrammar>
+public class DateTimeParserSyntaxTest extends ParserTestCase<DateTime, DateTimeGrammar>
   {
   public DateTimeParserSyntaxTest()
     {
@@ -151,7 +151,7 @@ public class DateTimeParserSyntaxTest extends ParserTestCase<DateTimeGrammar>
     {
     ParsingResult<DateTime> parsingResult = assertParse( dateTime );
 
-    assertEquals( expectedMillis, new Long( parsingResult.resultValue.toInstant( new Context(  ) ).toEpochMilli() ) );
+    assertEquals( expectedMillis, new Long( parsingResult.resultValue.toInstant( new Context() ).toEpochMilli() ) );
     }
 
   @Override
