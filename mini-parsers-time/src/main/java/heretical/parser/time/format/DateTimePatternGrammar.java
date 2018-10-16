@@ -68,7 +68,7 @@ public class DateTimePatternGrammar extends BaseParser<Object>
       );
     }
 
-  public static final String OTHER = " _:.#?+-/";
+  public static final String OTHER = " ,_:.#?+-/";
 
   Rule OtherChar()
     {

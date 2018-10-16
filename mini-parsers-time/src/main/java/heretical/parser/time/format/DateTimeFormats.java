@@ -100,7 +100,8 @@ public class DateTimeFormats
       month_text4( "M", Char.text, 4, 4, -1 ), // May triggers MMM and MMMM
       day_of_month_simple( "d", Char.digit, 1, 1, 2 ),
       day_of_month( "d", Char.digit, 2 ),
-      day_of_month_short( "d", Char.digit, 3, -2 ),
+//      day_of_month_short( "d", Char.digit, 3, -2 ),
+      day_of_month_postfix( "o", Char.literal, 1, "rd", "st", "th"),
       hour_of_day( "H", Char.digit, 2 ),
       clock_hour_halfday( "h", Char.digit, 2, -2 ),
       minute_of_hour( "m", Char.digit, 2 ),
@@ -275,191 +276,69 @@ public class DateTimeFormats
       monthDayYear2HourMinHalfSpace( "MM/dd/yy hh:mm a", CalendarUnits.minutes ),
       monthDayYear2HourMinSecHalfSpace( "MM/dd/yy hh:mm:ss a", CalendarUnits.seconds ),
 
-      month3DayYear2( "MMM/dd/yy", CalendarUnits.days, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy" )
-        .toFormatter() ),
+      month3DayYear2( "MMM/dd/yy", CalendarUnits.days, insensitive( "MMM/dd/yy" ) ),
+      month3DayYear2Hour( "MMM/dd/yy HH", CalendarUnits.hours, insensitive( "MMM/dd/yy HH" ) ),
+      month3DayYear2HourMin( "MMM/dd/yy HH:mm", CalendarUnits.minutes, insensitive( "MMM/dd/yy HH:mm" ) ),
+      month3DayYear2HourMinSec( "MMM/dd/yy HH:mm:ss", CalendarUnits.seconds, insensitive( "MMM/dd/yy HH:mm:ss" ) ),
+      month3DayYear2HourMinSecZ( "MMM/dd/yy HH:mm:ssZ", CalendarUnits.seconds, insensitive( "MMM/dd/yy HH:mm:ssZ" ) ),
+      month3DayYear2HourMinSecZZ( "MMM/dd/yy HH:mm:ssZZ", CalendarUnits.seconds, insensitive( "MMM/dd/yy HH:mm:ssZZ" ) ),
 
-      month3DayYear2Hour( "MMM/dd/yy HH", CalendarUnits.hours, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy HH" )
-        .toFormatter() ),
+      month3DayYear4( "MMM/dd/yyyy", CalendarUnits.days, insensitive( "MMM/dd/yyyy" ) ),
+      month3DayYear4Hour( "MMM/dd/yyyy HH", CalendarUnits.hours, insensitive( "MMM/dd/yyyy HH" ) ),
+      month3DayYear4HourMin( "MMM/dd/yyyy HH:mm", CalendarUnits.minutes, insensitive( "MMM/dd/yyyy HH:mm" ) ),
+      month3DayYear4HourMinSec( "MMM/dd/yyyy HH:mm:ss", CalendarUnits.seconds, insensitive( "MMM/dd/yyyy HH:mm:ss" ) ),
+      month3DayYear4HourMinSecZ( "MMM/dd/yyyy HH:mm:ssZ", CalendarUnits.seconds, insensitive( "MMM/dd/yyyy HH:mm:ssZ" ) ),
+      month3DayYear4HourMinSecZZ( "MMM/dd/yyyy HH:mm:ssZZ", CalendarUnits.seconds, insensitive( "MMM/dd/yyyy HH:mm:ssZZ" ) ),
 
-      month3DayYear2HourMin( "MMM/dd/yy HH:mm", CalendarUnits.minutes, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy HH:mm" )
-        .toFormatter() ),
+      month3DayYear2HourHalf( "MMM/dd/yy hha", CalendarUnits.hours, insensitive( "MMM/dd/yy hha" ) ),
+      month3DayYear2HourMinHalf( "MMM/dd/yy hh:mma", CalendarUnits.minutes, insensitive( "MMM/dd/yy hh:mma" ) ),
+      month3DayYear2HourMinSecHalf( "MMM/dd/yy hh:mm:ssa", CalendarUnits.seconds, insensitive( "MMM/dd/yy hh:mm:ssa" ) ),
 
-      month3DayYear2HourMinSec( "MMM/dd/yy HH:mm:ss", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy HH:mm:ss" )
-        .toFormatter() ),
+      month3DayYear2HourHalfSpace( "MMM/dd/yy hh a", CalendarUnits.hours, insensitive( "MMM/dd/yy hh a" ) ),
+      month3DayYear2HourMinHalfSpace( "MMM/dd/yy hh:mm a", CalendarUnits.minutes, insensitive( "MMM/dd/yy hh:mm a" ) ),
+      month3DayYear2HourMinSecHalfSpace( "MMM/dd/yy hh:mm:ss a", CalendarUnits.seconds, insensitive( "MMM/dd/yy hh:mm:ss a" ) ),
 
-      month3DayYear2HourMinSecZ( "MMM/dd/yy HH:mm:ssZ", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy HH:mm:ssZ" )
-        .toFormatter() ),
+      month4DayYear2( "MMMM/dd/yy", CalendarUnits.days, insensitive( "MMMM/dd/yy" ) ),
+      month4DayYear2Hour( "MMMM/dd/yy HH", CalendarUnits.hours, insensitive( "MMMM/dd/yy HH" ) ),
+      month4DayYear2HourMin( "MMMM/dd/yy HH:mm", CalendarUnits.minutes, insensitive( "MMMM/dd/yy HH:mm" ) ),
+      month4DayYear2HourMinSec( "MMMM/dd/yy HH:mm:ss", CalendarUnits.seconds, insensitive( "MMMM/dd/yy HH:mm:ss" ) ),
+      month4DayYear2HourMinSecZ( "MMMM/dd/yy HH:mm:ssZ", CalendarUnits.seconds, insensitive( "MMMM/dd/yy HH:mm:ssZ" ) ),
+      month4DayYear2HourMinSecZZ( "MMMM/dd/yy HH:mm:ssZZ", CalendarUnits.seconds, insensitive( "MMMM/dd/yy HH:mm:ssZZ" ) ),
 
-      month3DayYear2HourMinSecZZ( "MMM/dd/yy HH:mm:ssZZ", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy HH:mm:ssZZ" )
-        .toFormatter() ),
+      month4DayYear4( "MMMM/dd/yyyy", CalendarUnits.days, insensitive( "MMMM/dd/yyyy" ) ),
+      month4DayYear4Hour( "MMMM/dd/yyyy HH", CalendarUnits.hours, insensitive( "MMMM/dd/yyyy HH" ) ),
+      month4DayYear4HourMin( "MMMM/dd/yyyy HH:mm", CalendarUnits.minutes, insensitive( "MMMM/dd/yyyy HH:mm" ) ),
 
-      month3DayYear4( "MMM/dd/yyyy", CalendarUnits.days, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yyyy" )
-        .toFormatter() ),
+      month4DayYear4HourMinSec( "MMMM/dd/yyyy HH:mm:ss", CalendarUnits.seconds, insensitive( "MMMM/dd/yyyy HH:mm:ss" ) ),
+      month4DayYear4HourMinSecZ( "MMMM/dd/yyyy HH:mm:ssZ", CalendarUnits.seconds, insensitive( "MMMM/dd/yyyy HH:mm:ssZ" ) ),
+      month4DayYear4HourMinSecZZ( "MMMM/dd/yyyy HH:mm:ssZZ", CalendarUnits.seconds, insensitive( "MMMM/dd/yyyy HH:mm:ssZZ" ) ),
 
-      month3DayYear4Hour( "MMM/dd/yyyy HH", CalendarUnits.hours, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yyyy HH" )
-        .toFormatter() ),
+      month4DayYear2HourHalf( "MMMM/dd/yy hha", CalendarUnits.hours, insensitive( "MMMM/dd/yy hha" ) ),
+      month4DayYear2HourMinHalf( "MMMM/dd/yy hh:mma", CalendarUnits.minutes, insensitive( "MMMM/dd/yy hh:mma" ) ),
+      month4DayYear2HourMinSecHalf( "MMMM/dd/yy hh:mm:ssa", CalendarUnits.seconds, insensitive( "MMMM/dd/yy hh:mm:ssa" ) ),
 
-      month3DayYear4HourMin( "MMM/dd/yyyy HH:mm", CalendarUnits.minutes, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yyyy HH:mm" )
-        .toFormatter() ),
-
-      month3DayYear4HourMinSec( "MMM/dd/yyyy HH:mm:ss", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yyyy HH:mm:ss" )
-        .toFormatter() ),
-
-      month3DayYear4HourMinSecZ( "MMM/dd/yyyy HH:mm:ssZ", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yyyy HH:mm:ssZ" )
-        .toFormatter() ),
-
-      month3DayYear4HourMinSecZZ( "MMM/dd/yyyy HH:mm:ssZZ", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yyyy HH:mm:ssZZ" )
-        .toFormatter() ),
-
-      month3DayYear2HourHalf( "MMM/dd/yy hha", CalendarUnits.hours, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy hha" )
-        .toFormatter() ),
-
-      month3DayYear2HourMinHalf( "MMM/dd/yy hh:mma", CalendarUnits.minutes, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy hh:mma" )
-        .toFormatter() ),
-
-      month3DayYear2HourMinSecHalf( "MMM/dd/yy hh:mm:ssa", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy hh:mm:ssa" )
-        .toFormatter() ),
-
-      month3DayYear2HourHalfSpace( "MMM/dd/yy hh a", CalendarUnits.hours, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy hh a" )
-        .toFormatter() ),
-
-      month3DayYear2HourMinHalfSpace( "MMM/dd/yy hh:mm a", CalendarUnits.minutes, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy hh:mm a" )
-        .toFormatter() ),
-
-      month3DayYear2HourMinSecHalfSpace( "MMM/dd/yy hh:mm:ss a", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMM/dd/yy hh:mm:ss a" )
-        .toFormatter() ),
-
-      month4DayYear2( "MMMM/dd/yy", CalendarUnits.days, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy" )
-        .toFormatter() ),
-
-      month4DayYear2Hour( "MMMM/dd/yy HH", CalendarUnits.hours, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy HH" )
-        .toFormatter() ),
-
-      month4DayYear2HourMin( "MMMM/dd/yy HH:mm", CalendarUnits.minutes, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy HH:mm" )
-        .toFormatter() ),
-
-      month4DayYear2HourMinSec( "MMMM/dd/yy HH:mm:ss", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy HH:mm:ss" )
-        .toFormatter() ),
-
-      month4DayYear2HourMinSecZ( "MMMM/dd/yy HH:mm:ssZ", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy HH:mm:ssZ" )
-        .toFormatter() ),
-
-      month4DayYear2HourMinSecZZ( "MMMM/dd/yy HH:mm:ssZZ", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy HH:mm:ssZZ" )
-        .toFormatter() ),
-
-      month4DayYear4( "MMMM/dd/yyyy", CalendarUnits.days, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yyyy" )
-        .toFormatter() ),
-
-      month4DayYear4Hour( "MMMM/dd/yyyy HH", CalendarUnits.hours, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yyyy HH" )
-        .toFormatter() ),
-
-      month4DayYear4HourMin( "MMMM/dd/yyyy HH:mm", CalendarUnits.minutes, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yyyy HH:mm" )
-        .toFormatter() ),
-
-      month4DayYear4HourMinSec( "MMMM/dd/yyyy HH:mm:ss", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yyyy HH:mm:ss" )
-        .toFormatter() ),
-
-      month4DayYear4HourMinSecZ( "MMMM/dd/yyyy HH:mm:ssZ", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yyyy HH:mm:ssZ" )
-        .toFormatter() ),
-
-      month4DayYear4HourMinSecZZ( "MMMM/dd/yyyy HH:mm:ssZZ", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yyyy HH:mm:ssZZ" )
-        .toFormatter() ),
-
-      month4DayYear2HourHalf( "MMMM/dd/yy hha", CalendarUnits.hours, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy hha" )
-        .toFormatter() ),
-
-      month4DayYear2HourMinHalf( "MMMM/dd/yy hh:mma", CalendarUnits.minutes, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy hh:mma" )
-        .toFormatter() ),
-
-      month4DayYear2HourMinSecHalf( "MMMM/dd/yy hh:mm:ssa", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy hh:mm:ssa" )
-        .toFormatter() ),
-
-      month4DayYear2HourHalfSpace( "MMMM/dd/yy hh a", CalendarUnits.hours, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy hh a" )
-        .toFormatter() ),
-
-      month4DayYear2HourMinHalfSpace( "MMMM/dd/yy hh:mm a", CalendarUnits.minutes, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy hh:mm a" )
-        .toFormatter() ),
-
-      month4DayYear2HourMinSecHalfSpace( "MMMM/dd/yy hh:mm:ss a", CalendarUnits.seconds, new DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendPattern( "MMMM/dd/yy hh:mm:ss a" )
-        .toFormatter() ),
+      month4DayYear2HourHalfSpace( "MMMM/dd/yy hh a", CalendarUnits.hours, insensitive( "MMMM/dd/yy hh a" ) ),
+      month4DayYear2HourMinHalfSpace( "MMMM/dd/yy hh:mm a", CalendarUnits.minutes, insensitive( "MMMM/dd/yy hh:mm a" ) ),
+      month4DayYear2HourMinSecHalfSpace( "MMMM/dd/yy hh:mm:ss a", CalendarUnits.seconds, insensitive( "MMMM/dd/yy hh:mm:ss a" ) ),
 
       // OTHER USEFUL FORMATS
-      apacheLogDateTime( "dd/MMM/yyyy:HH:mm:ss X", CalendarUnits.seconds, new DateTimeFormatterBuilder()
+      apacheLogDateTime( "dd/MMM/yyyy:HH:mm:ss X", CalendarUnits.seconds, insensitive( "dd/MMM/yyyy:HH:mm:ss X" ) ),
+
+      longDateTimeHourMinSec( "MMMM do yyyy, HH:mm:ss", CalendarUnits.seconds, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH:mm:ss" ) ),
+      longDateTimeHourMin( "MMMM do yyyy, HH:mm", CalendarUnits.minutes, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH:mm" ) ),
+      longDateTimeHour( "MMMM do yyyy, HH", CalendarUnits.hours, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH" ) ),
+
+      shortDateTimeHourMinSec( "MMM do yyyy, HH:mm:ss", CalendarUnits.seconds, insensitive( "MMM d['rd']['st']['th'] yyyy, HH:mm:ss" ) ),
+      shortDateTimeHourMin( "MMM do yyyy, HH:mm", CalendarUnits.minutes, insensitive( "MMM d['rd']['st']['th'] yyyy, HH:mm" ) ),
+      shortDateTimeHour( "MMM do yyyy, HH", CalendarUnits.hours, insensitive( "MMM d['rd']['st']['th'] yyyy, HH" ) );
+
+    private static DateTimeFormatter insensitive( String format )
+      {
+      return new DateTimeFormatterBuilder()
         .parseCaseInsensitive()
-        .appendPattern( "dd/MMM/yyyy:HH:mm:ss X" )
-        .toFormatter() );
+        .appendPattern( format )
+        .toFormatter();
+      }
 
     String pattern;
     CalendarUnits unit;

@@ -61,6 +61,12 @@ public class DateTimeParserSyntaxTest extends ParserTestCase<DateTime, DateTimeG
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "February/10/15 02:04" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "february/10/15 02:04" );
 
+    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "February 10th 2015, 02" );
+    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "Feb 10th 2015, 02" );
+    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "february 10th 2015, 02" );
+    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "february 10th 2015, 02:04" );
+    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 3 ), "february 10th 2015, 02:04:03" );
+
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "02/10/15 02" );
 
     assertParse( getAbsoluteDate( 2015, 1, 10 ), "20150210" );
