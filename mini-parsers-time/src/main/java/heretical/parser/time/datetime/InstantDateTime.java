@@ -9,13 +9,9 @@
 package heretical.parser.time.datetime;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
-import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAccessor;
 
 import heretical.parser.time.Context;
@@ -78,7 +74,11 @@ public class InstantDateTime extends DateTime
         }
       else
         {
-        Temporal moment = LocalDate.now( ZoneOffset.UTC ).atTime( LocalTime.of( 0, 0 ) );
+        ZonedDateTime moment = ZonedDateTime.now( context.getClock() )
+          .withHour( 0 )
+          .withMinute( 0 )
+          .withSecond( 0 )
+          .withNano( 0 );
 
         if( parsed.isSupported( ChronoField.YEAR ) )
           moment = moment.with( ChronoField.YEAR, parsed.getLong( ChronoField.YEAR ) );
@@ -101,7 +101,7 @@ public class InstantDateTime extends DateTime
         if( parsed.isSupported( ChronoField.MILLI_OF_SECOND ) )
           moment = moment.with( ChronoField.MILLI_OF_SECOND, parsed.get( ChronoField.MILLI_OF_SECOND ) );
 
-        instant = ( (LocalDateTime) moment ).toInstant( ZoneOffset.UTC );
+        instant = moment.toInstant();
         }
 
       if( offset != 0 )

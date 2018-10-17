@@ -9,8 +9,7 @@
 package heretical.parser.time.datetime;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -47,7 +46,7 @@ public class OrdinalDateTime extends DateTime
 
   public Instant toInstant( Context context )
     {
-    LocalDateTime dateTime = LocalDateTime.now( context.getClock() );
+    ZonedDateTime dateTime = ZonedDateTime.now( context.getClock() );
 
     Supplier<Integer> snapOrdinal = new Supplier<Integer>()
       {
@@ -100,7 +99,7 @@ public class OrdinalDateTime extends DateTime
         dateTime = dateTime.with( t -> t.with( ChronoField.MILLI_OF_SECOND, snapOrdinal.get() ) );
       }
 
-    return dateTime.toInstant( (ZoneOffset) context.getClock().getZone().normalized() );
+    return dateTime.toInstant();
     }
 
   @Override

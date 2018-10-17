@@ -9,23 +9,21 @@
 package heretical.parser.time;
 
 import java.time.Clock;
+import java.time.ZoneId;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
-import java.util.TimeZone;
+import java.util.Objects;
 
 /**
  *
  */
 public class Context
   {
-  public static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone( "UTC" );
-  public static final Locale DEFAULT_LOCALE = Locale.US;
+  public static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
   Clock clock = Clock.systemUTC();
-  TimeZone timeZone = DEFAULT_TIME_ZONE;
   Locale locale = DEFAULT_LOCALE;
-  TemporalField weekField = null;
 
   /**
    * Uses sane defaults, for testing and simple usage
@@ -34,16 +32,15 @@ public class Context
     {
     }
 
-  public Context( TimeZone timeZone, Locale locale )
+  public Context( ZoneId zoneId, Locale locale )
     {
-    setTimeZone( timeZone );
+    setClock( Clock.system( zoneId ) );
     setLocale( locale );
     }
 
-  public Context( Clock clock, TimeZone timeZone, Locale locale )
+  public Context( Clock clock, Locale locale )
     {
     setClock( clock );
-    setTimeZone( timeZone );
     setLocale( locale );
     }
 
@@ -59,28 +56,16 @@ public class Context
 
   private void setClock( Clock clock )
     {
-    if( clock != null )
-      this.clock = clock;
-    }
+    Objects.requireNonNull( clock, "clock may not be null" );
 
-  private void setTimeZone( TimeZone timeZone )
-    {
-    if( timeZone != null )
-      this.timeZone = timeZone;
-    }
-
-  public TimeZone getTimeZone()
-    {
-    return timeZone;
+    this.clock = clock;
     }
 
   private void setLocale( Locale locale )
     {
-    if( locale != null )
-      {
-      this.locale = locale;
-      this.weekField = null;
-      }
+    Objects.requireNonNull( locale, "locale may not be null" );
+
+    this.locale = locale;
     }
 
   public Locale getLocale()
@@ -90,9 +75,6 @@ public class Context
 
   public TemporalField getWeekField()
     {
-    if( weekField == null )
-      weekField = WeekFields.of( locale ).dayOfWeek();
-
-    return weekField;
+    return WeekFields.of( getLocale() ).dayOfWeek();
     }
   }
