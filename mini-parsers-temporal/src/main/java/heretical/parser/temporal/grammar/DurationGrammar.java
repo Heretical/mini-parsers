@@ -58,7 +58,7 @@ public class DurationGrammar extends BaseSyntaxGrammar<DurationExp>
   protected Rule ISO8601Duration()
     {
     return Sequence(
-      Optional( "+-" ),
+      Optional( AnyOf( "+-" ) ),
       IgnoreCase( 'P' ),
       Optional(
         Optional( "+-" ),
@@ -68,21 +68,21 @@ public class DurationGrammar extends BaseSyntaxGrammar<DurationExp>
       Optional(
         Sequence( IgnoreCase( 'T' ), Test( Optional( Optional( "+-" ), OneOrMore( Digit() ) ) ),
           Optional(
-            Optional( "+-" ),
+            Optional( AnyOf( "+-" ) ),
             OneOrMore( Digit() ),
             IgnoreCase( 'H' )
           ),
           Optional(
-            Optional( "+-" ),
+            Optional( AnyOf( "+-" ) ),
             OneOrMore( Digit() ),
             IgnoreCase( 'M' )
           ),
           Optional(
-            Optional( "+-" ),
+            Optional( AnyOf( "+-" ) ),
             OneOrMore( Digit() ),
             Optional(
-              '.',
-              OneOrMore( Digit() )
+              AnyOf( ".," ),
+              OneOrMore( Digit() ) // todo: only up to 9 digits
             ),
             IgnoreCase( 'S' )
           )
@@ -105,7 +105,7 @@ public class DurationGrammar extends BaseSyntaxGrammar<DurationExp>
     return Sequence(
       Units( amount, unit ),
       var.get().setAmount( amount.get() ),
-      var.get().setUnit( unit.get()),
+      var.get().setUnit( unit.get() ),
       push( var.get() )
     );
     }

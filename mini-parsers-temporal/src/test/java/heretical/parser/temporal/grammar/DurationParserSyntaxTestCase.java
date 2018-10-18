@@ -58,7 +58,7 @@ public class DurationParserSyntaxTestCase extends ParserTestCase<DurationExp, Du
     assertParseISO( expected );
     }
 
-  protected void assertParseISO( Duration expected)
+  protected void assertParseISO( Duration expected )
     {
     assertParse( expected, expected.toString() );
     }

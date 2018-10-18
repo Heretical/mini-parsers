@@ -60,4 +60,14 @@ public class DurationParserSyntaxTest extends DurationParserSyntaxTestCase
 
     assertISOAndNatural( ZERO.plusDays( Period.ofYears( 3 ).getDays() ), "3 years" );
     }
+
+  @Test
+  public void iso()
+    {
+    assertParse( ZERO.plusSeconds( 20 ).plusMillis( 345L ), "PT20.345S" );
+    assertParse( ZERO.plusSeconds( 20 ).plusMillis( 345L ), "PT20,345S" );
+    assertParse( ZERO.plusSeconds( 20 ).plusMillis( 345L ), "+PT20.345S" );
+    assertParse( ZERO.plusSeconds( 20 ).plusMillis( 345L ), "PT+20.345S" );
+    assertParse( ZERO.plusSeconds( 20 ).plusMillis( 345L ).negated(), "-PT20.345S" );
+    }
   }

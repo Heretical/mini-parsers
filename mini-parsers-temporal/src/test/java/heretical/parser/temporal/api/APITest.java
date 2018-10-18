@@ -39,7 +39,8 @@ public class APITest
   @Test
   public void absolute()
     {
-    TemporalResult<DateTimeExp, Instant> result = new AbsoluteDateTimeParser( context ).parseOrFail( "2015-02-10T02:04:30+00:00" );
+    AbsoluteDateTimeParser parser = new AbsoluteDateTimeParser( context );
+    TemporalResult<DateTimeExp, Instant> result = parser.parseOrFail( "2015-02-10T02:04:30+00:00" );
 
     TemporalAccessor parsed = DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse( "2015-02-10T02:04:30+00:00" );
     Instant instant = Instant.ofEpochSecond( parsed.getLong( ChronoField.INSTANT_SECONDS ) )
@@ -51,11 +52,11 @@ public class APITest
   @Test
   public void duration()
     {
-    DurationParser durationParser = new DurationParser( context );
+    DurationParser parser = new DurationParser( context );
     Duration expected = ZERO.plus( 1, ChronoUnit.MINUTES );
 
-    assertEquals( expected, durationParser.parseOrFail( "1 min" ).getResult() );
-    assertEquals( expected, durationParser.parseOrFail( "PT1M" ).getResult() );
+    assertEquals( expected, parser.parseOrFail( "1 min" ).getResult() );
+    assertEquals( expected, parser.parseOrFail( "PT1M" ).getResult() );
     }
 
   @Test
@@ -66,7 +67,7 @@ public class APITest
     assertEquals( Duration.parse( "PT20.345S" ), result.getResult() );
     }
 
-  @Test(expected =  ParserSyntaxException.class)
+  @Test(expected = ParserSyntaxException.class)
   public void durationISOFail()
     {
     TemporalResult<DurationExp, Duration> result = new ISODurationParser( context ).parseOrFail( "2 hours" );
