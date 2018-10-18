@@ -6,7 +6,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-include 'mini-parsers-common'
-include 'mini-parsers-temporal'
+package heretical.parser.common.expression;
 
-rootProject.name = 'mini-parsers'
+/**
+ *
+ */
+public interface Expression
+  {
+  }

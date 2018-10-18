@@ -11,6 +11,7 @@ package heretical.parser.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import heretical.parser.common.expression.Expression;
 import org.parboiled.errors.ErrorUtils;
 import org.parboiled.errors.ParseError;
 import org.parboiled.support.ParsingResult;
@@ -18,18 +19,18 @@ import org.parboiled.support.ParsingResult;
 /**
  *
  */
-public class Result<T>
+public class Result<E extends Expression>
   {
-  private final ParsingResult<T> result;
+  private final ParsingResult<E> result;
   private final long parseDuration;
 
-  public Result( ParsingResult<T> result, long parseDuration )
+  public Result( ParsingResult<E> result, long parseDuration )
     {
     this.result = result;
     this.parseDuration = parseDuration;
     }
 
-  public ParsingResult<T> getParsingResult()
+  public ParsingResult<E> getParsingResult()
     {
     return result;
     }
@@ -49,7 +50,7 @@ public class Result<T>
     return result.hasErrors();
     }
 
-  public T getResultValue()
+  public E getExpression()
     {
     return result.resultValue;
     }

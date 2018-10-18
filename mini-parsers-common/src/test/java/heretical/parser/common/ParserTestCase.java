@@ -90,7 +90,7 @@ public abstract class ParserTestCase<V, P extends BaseParser<V>>
     if( !result.matched && result.hasErrors() && matched )
       LOG.info( ErrorUtils.printParseErrors( result ) );
 
-    assertEquals( matched, result.matched );
+    assertEquals( "did not match", matched, result.matched );
 
     return result;
     }

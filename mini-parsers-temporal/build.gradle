@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2018 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+dependencies {
+
+  api project( ':mini-parsers-common' )
+  
+  implementation group: 'org.parboiled', name: 'parboiled-java', version: '1.2.0'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+
+  testCompile project( path: ':mini-parsers-common', configuration: 'testArtifacts' )
+  
+  testRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
+}

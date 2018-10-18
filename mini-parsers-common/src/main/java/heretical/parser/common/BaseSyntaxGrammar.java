@@ -8,6 +8,10 @@
 
 package heretical.parser.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import heretical.parser.common.util.IntegerVar;
 import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.annotations.DontLabel;
@@ -106,7 +110,7 @@ public class BaseSyntaxGrammar<Node> extends BaseParser<Node>
     ) );
     }
 
-  Rule ListItem( StringVar term )
+  protected Rule ListItem( StringVar term )
     {
     return Sequence(
       OneOrMore(
@@ -120,7 +124,7 @@ public class BaseSyntaxGrammar<Node> extends BaseParser<Node>
     );
     }
 
-  Rule NotListItem( StringVar term )
+  protected Rule NotListItem( StringVar term )
     {
     return Sequence(
       OneOrMore(
@@ -134,7 +138,7 @@ public class BaseSyntaxGrammar<Node> extends BaseParser<Node>
     );
     }
 
-  Rule Term( StringVar term )
+  protected Rule Term( StringVar term )
     {
     return Sequence(
       OneOrMore(
@@ -160,5 +164,139 @@ public class BaseSyntaxGrammar<Node> extends BaseParser<Node>
   protected Rule Terminal( String string, Rule mustNotFollow )
     {
     return Sequence( IgnoreCase( string ), TestNot( mustNotFollow ), Spacing() ).label( '\'' + string + '\'' );
+    }
+
+  @SuppressNode
+  @DontLabel
+  protected Rule Keyword( String lhs, IntegerVar ordinal, Rule rhs, StringVar unit )
+    {
+    return
+      Sequence(
+        IgnoreCase( lhs ),
+        Spacing(),
+        Optional( Number(), ordinal.set( match() ), Spacing() ),
+        rhs,
+        unit.set( match().trim() )
+      );
+    }
+
+  @SuppressNode
+  @DontLabel
+  protected Rule Keyword( IntegerVar ordinal, Rule lhs, StringVar unit, String rhs )
+    {
+    return
+      Sequence(
+        Optional( Number(), ordinal.set( match() ) ),
+        Spacing(),
+        lhs,
+        unit.set( match().trim() ),
+        Spacing(),
+        IgnoreCase( rhs )
+      );
+    }
+
+  @SuppressNode
+  @DontLabel
+  protected Rule Keyword( String lhs, Rule rhs, StringVar unit )
+    {
+    return
+      Sequence(
+        IgnoreCase( lhs ),
+        Spacing(),
+        rhs,
+        unit.set( match().trim() )
+      );
+    }
+
+  @SuppressNode
+  @DontLabel
+  protected Rule Keyword( String keyword )
+    {
+    return Terminal( keyword, LetterOrDigit() );
+    }
+
+  @SuppressNode
+  @DontLabel
+  protected Rule LetterOrDigit()
+    {
+    return FirstOf( CharRange( 'a', 'z' ), CharRange( 'A', 'Z' ), CharRange( '0', '9' ), '_' );
+    }
+
+  @SuppressNode
+  @DontLabel
+  protected Rule Number()
+    {
+    return OneOrMore( FirstOf( Digit(), ',' ) ); // lax on the commas
+    }
+
+  @SuppressNode
+//  @DontLabel
+  protected Rule DoubleNumber()
+    {
+    return Sequence(
+      Optional( Ch( '-' ) ),
+      Number(),
+      Optional( Ch( '.' ), OneOrMore( Digit() ) )
+    );
+    }
+
+  @SuppressNode
+  @DontLabel
+  protected Rule DoubleNumberList()
+    {
+    // comma separates items
+    return OneOrMore(
+      Sequence(
+        Optional( Ch( '-' ) ),
+        OneOrMore( Digit() ),
+        Optional( Ch( '.' ), OneOrMore( Digit() ) ),
+        Optional( Ch( ',' ) )
+      )
+    );
+    }
+
+  protected Rule StringLiteral( StringVar term )
+    {
+    return Sequence(
+      '"',
+      ZeroOrMore(
+        FirstOf(
+          Escape(),
+          Sequence( TestNot( AnyOf( "\r\n\"\\" ) ), ANY )
+        )
+      ).suppressSubnodes(),
+      term.set( match() ),
+      '"',
+      Spacing()
+    );
+    }
+
+  protected Rule Escape()
+    {
+    return Sequence( '\\', FirstOf( AnyOf( "btnfr\"\'\\" ), OctalEscape(), UnicodeEscape() ) );
+    }
+
+  protected Rule OctalEscape()
+    {
+    return FirstOf(
+      Sequence( CharRange( '0', '3' ), CharRange( '0', '7' ), CharRange( '0', '7' ) ),
+      Sequence( CharRange( '0', '7' ), CharRange( '0', '7' ) ),
+      CharRange( '0', '7' )
+    );
+    }
+
+  protected Rule UnicodeEscape()
+    {
+    return Sequence( OneOrMore( 'u' ), HexDigit(), HexDigit(), HexDigit(), HexDigit() );
+    }
+
+  protected Rule FirstOfKeyword( Object[] terms )
+    {
+    List<Rule> rules = new ArrayList<>();
+
+    for( Object level : terms )
+      rules.add( Keyword( level.toString() ) );
+
+    return FirstOf( rules.toArray( new Rule[ rules.size() ] ) );
     }
   }
