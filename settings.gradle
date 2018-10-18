@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-include 'mini-parsers-common'
+include 'mini-parsers-core'
 include 'mini-parsers-temporal'
 
 rootProject.name = 'mini-parsers'
