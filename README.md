@@ -5,9 +5,16 @@
 Mini-Parsers is a Java API for parsing short discrete text strings into native types where a single type may have
 multiple textual representations.
 
+This is useful for supporting command line argument values piped or pasted from different sources, data entry 
+validation, or normalizing data in a column during data cleansing and ETL. 
+
 For example, the same instant in time (`java.time.Instant`) may have multiple formats. The two strings 
 `1423526400000` and `2015-02-10T02:04:30+00:00` are equivalent if the first is interpreted as the milliseconds since 
 the epoch.  
+
+Only absolute and duration text representation disambiguation is currently supported. But with plans for handling more 
+complex relative temporal representations like `10 days ago` or `last tuesday`. Also support for common units of 
+measure are being considered.
 
 Final Releases are available on jcenter:
 
@@ -39,7 +46,7 @@ WIP release maven coordinates can be found at:
 * https://bintray.com/heretical/wip/mini-parsers-core
 * https://bintray.com/heretical/wip/mini-parsers-temporal
 
-This library requires Java 8 and the JSON functionality is dependent on [Parboiled](https://github.com/sirthias/parboiled/wiki).
+This library requires Java 8 and the parsing functionality is dependent on [Parboiled](https://github.com/sirthias/parboiled/wiki).
 
 ## Usage
 
