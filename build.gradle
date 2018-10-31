@@ -181,7 +181,7 @@ subprojects {
           name = 'Mini-Parsers'
           description = 'An API for parsing small things.'
           url = 'http://www.heretical.io/'
-          inceptionYear = '2017'
+          inceptionYear = '2018'
           licenses {
             license {
               name = 'Mozilla Public License, v. 2.0'
