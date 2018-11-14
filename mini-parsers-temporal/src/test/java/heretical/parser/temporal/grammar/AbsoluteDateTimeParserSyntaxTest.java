@@ -8,6 +8,7 @@
 
 package heretical.parser.temporal.grammar;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static heretical.parser.temporal.grammar.TestDateTimeUtil.getAbsoluteDate;
@@ -23,7 +24,7 @@ public class AbsoluteDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCa
     super( true );
     }
 
-  @Test
+  @Ignore
   public void testOnlyOne() throws Exception
     {
     long nowHour = getAbsoluteDate( -1, -1, -1, -1, 0, 0 );
@@ -31,13 +32,15 @@ public class AbsoluteDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCa
     long nowMonth = getAbsoluteDate( -1, -1, 1 );
     long nowYear = getAbsoluteDate( -1, 0, 1 );
 
-    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04AM" );
+    assertParse( getAbsoluteDate( 2000, 0, 1 ), format( "%d", getAbsoluteDate( 2000, 0, 1 ) ) );
     }
 
   @Test
   public void test()
     {
     // support for millis since epoch
+    assertParse( getAbsoluteDate( 1970, 1, 1 ), format( "%d", getAbsoluteDate( 1970, 1, 1 ) ) );
+    assertParse( getAbsoluteDate( 2000, 0, 1 ), format( "%d", getAbsoluteDate( 2000, 0, 1 ) ) );
     assertParse( getAbsoluteDate( 2015, 1, 10 ), format( "%d", getAbsoluteDate( 2015, 1, 10 ) ) );
     assertParse( getAbsoluteDate( 2015, 1, 11 ), format( "%d", getAbsoluteDate( 2015, 1, 11 ) ) );
 

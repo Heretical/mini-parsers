@@ -10,6 +10,7 @@ package heretical.parser.temporal.format;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.SignStyle;
 import java.time.temporal.ChronoField;
 import java.util.Collections;
 import java.util.Comparator;
@@ -107,7 +108,7 @@ public class DateTimeFormats
       minute_of_hour( "m", Char.digit, 2 ),
       second_of_minute( "s", Char.digit, 2 ),
       fraction_of_second( "S", Char.digit, 3 ),
-      millis_in_epoch( "S", Char.digit, 13, 13 ), // make large so floats to the top
+      millis_in_epoch( "S", Char.digit, 13, 9, 13 ), // make large so floats to the top
       time_zone_id( "X", Char.literal, 1, "Z" ),
       time_zone1( "Z", Char.time_digits, 1, 5 ), // +0000
       time_zone2( "Z", Char.time_digits, 2, 5 ),
@@ -200,8 +201,8 @@ public class DateTimeFormats
   public enum DateTimeParser
     {
       millisInEpoch( "SSSSSSSSSSSSS", CalendarUnit.milliseconds, new DateTimeFormatterBuilder()
-        .appendValue( ChronoField.INSTANT_SECONDS, 10 )
-        .appendValue( ChronoField.MILLI_OF_SECOND, 3 )
+        .appendValue( ChronoField.INSTANT_SECONDS, 6, 19, SignStyle.NEVER )
+        .appendValue( ChronoField.MILLI_OF_SECOND,  3)
         .toFormatter() ), // allows for cut and past millisecond support
 
       // ISO FORMATS
