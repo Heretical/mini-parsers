@@ -103,7 +103,7 @@ public class DateTimeFormats
 //      day_of_month_short( "d", Char.digit, 3, -2 ),
       day_of_month_postfix( "o", Char.literal, 1, "rd", "st", "th"),
       hour_of_day( "H", Char.digit, 2 ),
-      clock_hour_halfday( "h", Char.digit, 2, -2 ),
+      clock_hour_halfday( "h", Char.digit, 2, 1, 2 ),
       minute_of_hour( "m", Char.digit, 2 ),
       second_of_minute( "s", Char.digit, 2 ),
       fraction_of_second( "S", Char.digit, 3 ),
@@ -324,10 +324,12 @@ public class DateTimeFormats
       // OTHER USEFUL FORMATS
       apacheLogDateTime( "dd/MMM/yyyy:HH:mm:ss X", CalendarUnit.seconds, insensitive( "dd/MMM/yyyy:HH:mm:ss X" ) ),
 
+      longDateTimeHourMinSecMillis( "MMMM do yyyy, HH:mm:ss.SSS", CalendarUnit.seconds, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH:mm:ss.SSS" ) ),
       longDateTimeHourMinSec( "MMMM do yyyy, HH:mm:ss", CalendarUnit.seconds, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH:mm:ss" ) ),
       longDateTimeHourMin( "MMMM do yyyy, HH:mm", CalendarUnit.minutes, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH:mm" ) ),
       longDateTimeHour( "MMMM do yyyy, HH", CalendarUnit.hours, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH" ) ),
 
+      shortDateTimeHourMinSecMillis( "MMM do yyyy, HH:mm:ss.SSS", CalendarUnit.seconds, insensitive( "MMM d['rd']['st']['th'] yyyy, HH:mm:ss.SSS" ) ),
       shortDateTimeHourMinSec( "MMM do yyyy, HH:mm:ss", CalendarUnit.seconds, insensitive( "MMM d['rd']['st']['th'] yyyy, HH:mm:ss" ) ),
       shortDateTimeHourMin( "MMM do yyyy, HH:mm", CalendarUnit.minutes, insensitive( "MMM d['rd']['st']['th'] yyyy, HH:mm" ) ),
       shortDateTimeHour( "MMM do yyyy, HH", CalendarUnit.hours, insensitive( "MMM d['rd']['st']['th'] yyyy, HH" ) );

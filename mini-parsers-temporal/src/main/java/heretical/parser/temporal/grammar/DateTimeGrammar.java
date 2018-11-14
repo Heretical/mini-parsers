@@ -102,22 +102,13 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
     switch( symbol.getCharType() )
       {
       case text:
-        if( symbol.minLength == -1 && symbol.maxLength == -1 )
-          return OneOrMore( Letter() );
-
-        if( symbol.maxLength == -1 )
-          return Sequence( NTimes( symbol.minLength - 1, Letter() ), OneOrMore( Letter() ) );
-
-        return Length( symbol, Letter() );
+        return Symbol( symbol, Letter() );
 
       case digit:
-        if( symbol.maxLength == -1 )
-          return OneOrMore( Digit() );
-
-        return Length( symbol, Digit() );
+        return Symbol( symbol, Digit() );
 
       case time_digits:
-        return FirstOf( 'Z', Length( symbol, TimeDigit() ) );
+        return FirstOf( 'Z', Symbol( symbol, TimeDigit() ) );
 
       case literal:
         return FirstOf( IgnoreCase( symbol.literals ) );
@@ -126,24 +117,18 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
     throw new IllegalStateException( "unsupported char type: " + symbol.getCharType() + " for: " + symbol.getSymbolFormat() );
     }
 
-  Rule Length( DateTimeFormats.Symbol symbol, Rule rule )
+  Rule Symbol( DateTimeFormats.Symbol symbol, Rule rule )
     {
-    if( symbol.maxLength > 0 )
+    if( symbol.minLength == -1 && symbol.maxLength == -1 )
+      return OneOrMore( rule );
+
+    if( symbol.maxLength == -1 )
+      return Sequence( NTimes( symbol.minLength - 1, rule ), OneOrMore( rule ) );
+
+    if( symbol.minLength == symbol.maxLength && symbol.maxLength > 0 )
       return NTimes( symbol.maxLength, rule );
 
-    int iterations = symbol.maxLength + 1;
-
-    Rule result = Optional( rule );
-
-    for( int i = iterations; i < 0; i++ )
-      {
-      if( i == -1 )
-        result = Sequence( rule, result );
-      else
-        result = Optional( rule, result );
-      }
-
-    return result;
+    return Sequence( NTimes( symbol.minLength, rule ), ZeroOrMore( rule ) );
     }
 
   public Rule RelativeDateTimeEOI()
@@ -207,7 +192,7 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
       var.get().setUnit( CalendarUnit.valueOf( unit.get().toLowerCase() ) ),
       var.get().setOffset( -1 * ordinal.get() ),
       push( var.get() )
-      );
+    );
     }
 
   public Rule UnaryRelativeDateTimeEOI()
@@ -240,7 +225,7 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
       Keyword( dateUnit.name() ),
       Spacing(),
       push( var.get() )
-      );
+    );
     }
 
   Rule RelativeThisTerm()

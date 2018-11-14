@@ -8,11 +8,9 @@
 
 package heretical.parser.temporal.grammar;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static heretical.parser.temporal.grammar.TestDateTimeUtil.getAbsoluteDate;
-import static heretical.parser.temporal.grammar.TestDateTimeUtil.getRelativeDayOfWeek;
 import static java.lang.String.format;
 
 /**
@@ -22,10 +20,10 @@ public class AbsoluteDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCa
   {
   public AbsoluteDateTimeParserSyntaxTest()
     {
-    super( false );
+    super( true );
     }
 
-  @Ignore
+  @Test
   public void testOnlyOne() throws Exception
     {
     long nowHour = getAbsoluteDate( -1, -1, -1, -1, 0, 0 );
@@ -33,7 +31,7 @@ public class AbsoluteDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCa
     long nowMonth = getAbsoluteDate( -1, -1, 1 );
     long nowYear = getAbsoluteDate( -1, 0, 1 );
 
-    assertParse( getRelativeDayOfWeek( nowDay, 1 ), "last sunday" );
+    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04AM" );
     }
 
   @Test
@@ -47,20 +45,25 @@ public class AbsoluteDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCa
     assertParse( getAbsoluteDate( 2015, 1, 10 ), "02/10/15" );
 
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04" );
-    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04AM" );
-//    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04am" );
-    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04 AM" );
-//    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04 am" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "Feb/10/15 02:04" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "feb/10/15 02:04" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "February/10/15 02:04" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "february/10/15 02:04" );
+
+    // can't seem to handle am/pm lowercase
+    //    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04am" );
+    //    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04 am" );
+    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04AM" );
+    assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "02/10/15 02:04 AM" );
 
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "February 10th 2015, 02" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "Feb 10th 2015, 02" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "february 10th 2015, 02" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 0 ), "february 10th 2015, 02:04" );
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 4, 3 ), "february 10th 2015, 02:04:03" );
+    assertParse( getAbsoluteDate( 2018, 10, 9, 20, 0, 0 ), "November 9th 2018, 20:00:00" );
+    assertParse( getAbsoluteDate( 2018, 10, 9, 20, 0, 0 ), "November 09th 2018, 20:00:00" );
+    assertParse( getAbsoluteDate( 2018, 10, 9, 20, 0, 0 ), "November 9th 2018, 20:00:00.000" );
 
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "02/10/15 02" );
 
