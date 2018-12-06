@@ -21,7 +21,7 @@ public class AbsoluteDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCa
   {
   public AbsoluteDateTimeParserSyntaxTest()
     {
-    super( true );
+    super( false );
     }
 
   @Ignore
@@ -32,7 +32,7 @@ public class AbsoluteDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCa
     long nowMonth = getAbsoluteDate( -1, -1, 1 );
     long nowYear = getAbsoluteDate( -1, 0, 1 );
 
-    assertParse( getAbsoluteDate( 2000, 0, 1 ), format( "%d", getAbsoluteDate( 2000, 0, 1 ) ) );
+    assertParse( getAbsoluteDate( 2018, 10, 2, 20, 0, 0 ), "November 2nd 2018, 20:00:00.000" );
     }
 
   @Test
@@ -67,6 +67,7 @@ public class AbsoluteDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCa
     assertParse( getAbsoluteDate( 2018, 10, 9, 20, 0, 0 ), "November 9th 2018, 20:00:00" );
     assertParse( getAbsoluteDate( 2018, 10, 9, 20, 0, 0 ), "November 09th 2018, 20:00:00" );
     assertParse( getAbsoluteDate( 2018, 10, 9, 20, 0, 0 ), "November 9th 2018, 20:00:00.000" );
+    assertParse( getAbsoluteDate( 2018, 10, 2, 20, 0, 0 ), "November 2nd 2018, 20:00:00.000" );
 
     assertParse( getAbsoluteDate( 2015, 1, 10, 2, 0, 0 ), "02/10/15 02" );
 

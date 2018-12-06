@@ -101,8 +101,8 @@ public class DateTimeFormats
       month_text4( "M", Char.text, 4, 4, -1 ), // May triggers MMM and MMMM
       day_of_month_simple( "d", Char.digit, 1, 1, 2 ),
       day_of_month( "d", Char.digit, 2 ),
-//      day_of_month_short( "d", Char.digit, 3, -2 ),
-      day_of_month_postfix( "o", Char.literal, 1, "rd", "st", "th"),
+      //      day_of_month_short( "d", Char.digit, 3, -2 ),
+      day_of_month_postfix( "o", Char.literal, 1, "nd", "rd", "st", "th" ),
       hour_of_day( "H", Char.digit, 2 ),
       clock_hour_halfday( "h", Char.digit, 2, 1, 2 ),
       minute_of_hour( "m", Char.digit, 2 ),
@@ -202,7 +202,7 @@ public class DateTimeFormats
     {
       millisInEpoch( "SSSSSSSSSSSSS", CalendarUnit.milliseconds, new DateTimeFormatterBuilder()
         .appendValue( ChronoField.INSTANT_SECONDS, 6, 19, SignStyle.NEVER )
-        .appendValue( ChronoField.MILLI_OF_SECOND,  3)
+        .appendValue( ChronoField.MILLI_OF_SECOND, 3 )
         .toFormatter() ), // allows for cut and past millisecond support
 
       // ISO FORMATS
@@ -325,15 +325,15 @@ public class DateTimeFormats
       // OTHER USEFUL FORMATS
       apacheLogDateTime( "dd/MMM/yyyy:HH:mm:ss X", CalendarUnit.seconds, insensitive( "dd/MMM/yyyy:HH:mm:ss X" ) ),
 
-      longDateTimeHourMinSecMillis( "MMMM do yyyy, HH:mm:ss.SSS", CalendarUnit.seconds, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH:mm:ss.SSS" ) ),
-      longDateTimeHourMinSec( "MMMM do yyyy, HH:mm:ss", CalendarUnit.seconds, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH:mm:ss" ) ),
-      longDateTimeHourMin( "MMMM do yyyy, HH:mm", CalendarUnit.minutes, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH:mm" ) ),
-      longDateTimeHour( "MMMM do yyyy, HH", CalendarUnit.hours, insensitive( "MMMM d['rd']['st']['th'] yyyy, HH" ) ),
+      longDateTimeHourMinSecMillis( "MMMM do yyyy, HH:mm:ss.SSS", CalendarUnit.seconds, insensitive( "MMMM d['nd']['rd']['st']['th'] yyyy, HH:mm:ss.SSS" ) ),
+      longDateTimeHourMinSec( "MMMM do yyyy, HH:mm:ss", CalendarUnit.seconds, insensitive( "MMMM d['nd']['rd']['st']['th'] yyyy, HH:mm:ss" ) ),
+      longDateTimeHourMin( "MMMM do yyyy, HH:mm", CalendarUnit.minutes, insensitive( "MMMM d['nd']['rd']['st']['th'] yyyy, HH:mm" ) ),
+      longDateTimeHour( "MMMM do yyyy, HH", CalendarUnit.hours, insensitive( "MMMM d['nd']['rd']['st']['th'] yyyy, HH" ) ),
 
-      shortDateTimeHourMinSecMillis( "MMM do yyyy, HH:mm:ss.SSS", CalendarUnit.seconds, insensitive( "MMM d['rd']['st']['th'] yyyy, HH:mm:ss.SSS" ) ),
-      shortDateTimeHourMinSec( "MMM do yyyy, HH:mm:ss", CalendarUnit.seconds, insensitive( "MMM d['rd']['st']['th'] yyyy, HH:mm:ss" ) ),
-      shortDateTimeHourMin( "MMM do yyyy, HH:mm", CalendarUnit.minutes, insensitive( "MMM d['rd']['st']['th'] yyyy, HH:mm" ) ),
-      shortDateTimeHour( "MMM do yyyy, HH", CalendarUnit.hours, insensitive( "MMM d['rd']['st']['th'] yyyy, HH" ) );
+      shortDateTimeHourMinSecMillis( "MMM do yyyy, HH:mm:ss.SSS", CalendarUnit.seconds, insensitive( "MMM d['nd']['rd']['st']['th'] yyyy, HH:mm:ss.SSS" ) ),
+      shortDateTimeHourMinSec( "MMM do yyyy, HH:mm:ss", CalendarUnit.seconds, insensitive( "MMM d['nd']['rd']['st']['th'] yyyy, HH:mm:ss" ) ),
+      shortDateTimeHourMin( "MMM do yyyy, HH:mm", CalendarUnit.minutes, insensitive( "MMM d['nd']['rd']['st']['th'] yyyy, HH:mm" ) ),
+      shortDateTimeHour( "MMM do yyyy, HH", CalendarUnit.hours, insensitive( "MMM d['nd']['rd']['st']['th'] yyyy, HH" ) );
 
     private static DateTimeFormatter insensitive( String format )
       {
