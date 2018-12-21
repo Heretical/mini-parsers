@@ -27,14 +27,14 @@ implementation 'io.heretical:mini-parsers-temporal:1.0.1'
 ```xml
 <dependency>
   <groupId>io.heretical</groupId>
-  <artifactId>pointer-path-core</artifactId>
+  <artifactId>mini-parsers-core</artifactId>
   <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 
 <dependency>
   <groupId>io.heretical</groupId>
-  <artifactId>pointer-path-temporal</artifactId>
+  <artifactId>mini-parsers-temporal</artifactId>
   <version>1.0.1</version>
   <type>pom</type>
 </dependency>
