@@ -3,6 +3,7 @@ branches:
   - /^wip-[0-9]+\.[0-9]+$/
   - /^[0-9]+\.[0-9]+$/
 
+dist: trusty
 language: java
 
 jdk:
