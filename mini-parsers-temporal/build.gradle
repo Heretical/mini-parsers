@@ -9,11 +9,11 @@
 dependencies {
 
   api project( ':mini-parsers-core' )
-  
-  implementation group: 'org.parboiled', name: 'parboiled-java', version: '1.2.0'
+
+  implementation group: 'org.parboiled', name: 'parboiled-java', version: parboiledVersion
   implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
 
   testCompile project( path: ':mini-parsers-core', configuration: 'testArtifacts' )
-  
+
   testRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
 }
