@@ -15,35 +15,32 @@ Only absolute and duration text representation disambiguation is currently suppo
 complex relative temporal representations like `10 days ago` or `last tuesday`. Also support for common units of measure
 are being considered.
 
-Final Releases are available on jcenter:
-
-* https://jcenter.bintray.com/
+Final Releases are available on Maven Central (unreleased):
 
 ```gradle
-implementation 'io.heretical:mini-parsers-core:1.0.1'
-implementation 'io.heretical:mini-parsers-temporal:1.0.1'
+implementation 'io.heretical:mini-parsers-core:1.1.0'
+implementation 'io.heretical:mini-parsers-temporal:1.1.0'
 ```
 
 ```xml
 <dependency>
   <groupId>io.heretical</groupId>
   <artifactId>mini-parsers-core</artifactId>
-  <version>1.0.1</version>
+  <version>1.1.0</version>
   <type>pom</type>
 </dependency>
 
 <dependency>
   <groupId>io.heretical</groupId>
   <artifactId>mini-parsers-temporal</artifactId>
-  <version>1.0.1</version>
+  <version>1.1.0</version>
   <type>pom</type>
 </dependency>
 ```
 
 WIP release maven coordinates can be found at:
 
-* https://bintray.com/heretical/wip/mini-parsers-core
-* https://bintray.com/heretical/wip/mini-parsers-temporal
+* https://github.com/orgs/Heretical/packages?repo_name=mini-parsers
 
 This library requires Java 8 and the parsing functionality is dependent on [Parboiled](https://github.com/sirthias/parboiled/wiki).
 

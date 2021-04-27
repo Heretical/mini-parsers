@@ -40,7 +40,7 @@ task prepareDist() {
   }
 }
 
-ext.copyright = '<i>Copyright &#169; 2018 Chris K Wensel. All Rights Reserved.</i>'
+ext.copyright = '<i>Copyright &#169; 2018-2021 Chris K Wensel. All Rights Reserved.</i>'
 
 subprojects {
 
