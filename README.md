@@ -15,7 +15,7 @@ Only absolute and duration text representation disambiguation is currently suppo
 complex relative temporal representations like `10 days ago` or `last tuesday`. Also support for common units of measure
 are being considered.
 
-Final Releases are available on Maven Central (unreleased):
+Final Releases are available on Maven Central:
 
 ```gradle
 implementation 'io.heretical:mini-parsers-core:1.1.0'
