@@ -143,8 +143,8 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
       RelativeDate( RelativeDateUnit.today ),
       RelativeDate( RelativeDateUnit.yesterday ),
       ThisTerm(),
-      RelativeLastUnitSymbol( CalendarUnit.months ),
-      RelativeLastUnitSymbol( CalendarUnit.days ),
+//      RelativeLastUnitSymbol( CalendarUnit.months ),
+//      RelativeLastUnitSymbol( CalendarUnit.days ),
       LastTerm(),
       AgoTerm()
     );
@@ -208,8 +208,8 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
         RelativeDate( RelativeDateUnit.yesterday ),
         RelativeDate( RelativeDateUnit.today ),
         RelativeThisTerm(),
-        RelativeLastUnitSymbol( CalendarUnit.months ),
-        RelativeLastUnitSymbol( CalendarUnit.days ),
+//        RelativeLastUnitSymbol( CalendarUnit.months ),
+//        RelativeLastUnitSymbol( CalendarUnit.days ),
         RelativeLastTerm(),
         RelativeAgoTerm()
       ),
@@ -242,6 +242,11 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
     );
     }
 
+  // todo: needs to be rewritten
+  //       OrdinalDateTimeExp does not support day of week, which cannot
+  //       be captured by CalendarUnit as is.
+  //       note the adjusters might be a safer opion for adjustment than the current
+  //       waterfall of switch statements in OrdinalDateTimeExp
   Rule RelativeLastUnitSymbol( CalendarUnit unit )
     {
     Var<OrdinalDateTimeExp> var = new Var( new OrdinalDateTimeExp( unit ) );
@@ -250,10 +255,11 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
     return Sequence(
       Keyword( "last", FirstOfKeyword( unit.getSymbols() ), value ),
       Spacing(),
-      var.get().setOrdinal( Integer.valueOf( value.get() ) ),
+      var.get().setOrdinal( unit.getOrdinal( value.get() ) ),
       push( var.get() )
     );
     }
+
 
   Rule RelativeLastTerm()
     {

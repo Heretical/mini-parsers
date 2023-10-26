@@ -30,7 +30,12 @@ public class DateTimeParserSyntaxTestCase extends ParserTestCase<DateTimeExp, Da
     {
     ParsingResult<DateTimeExp> parsingResult = assertParse( dateTime );
 
-    assertEquals( expectedMillis, new Long( parsingResult.resultValue.toInstant( new Context() ).toEpochMilli() ) );
+    assertEquals( expectedMillis, Long.valueOf( parsingResult.resultValue.toInstant( context() ).toEpochMilli() ) );
+    }
+
+  protected Context context()
+    {
+    return new Context();
     }
 
   @Override

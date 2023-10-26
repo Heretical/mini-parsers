@@ -54,11 +54,11 @@ public enum CalendarUnit
       {
       DateFormatSymbols dateFormatSymbols = new DateFormatSymbols( locale );
 
-      addSymbols( days.getCanonicalUnit().symbols, dateFormatSymbols.getWeekdays() );
+      addSymbols( days.symbols, dateFormatSymbols.getWeekdays() );
       addSymbols( days.symbols, dateFormatSymbols.getShortWeekdays() );
 
-      addSymbols( months.getCanonicalUnit().symbols, dateFormatSymbols.getMonths() );
-      addSymbols( months.getCanonicalUnit().symbols, dateFormatSymbols.getShortMonths() );
+      addSymbols( months.symbols, dateFormatSymbols.getMonths() );
+      addSymbols( months.symbols, dateFormatSymbols.getShortMonths() );
       }
     }
 

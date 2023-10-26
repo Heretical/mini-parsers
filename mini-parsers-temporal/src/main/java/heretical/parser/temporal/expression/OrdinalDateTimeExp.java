@@ -9,9 +9,11 @@
 package heretical.parser.temporal.expression;
 
 import java.time.Instant;
+import java.time.Month;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import heretical.parser.temporal.Context;
@@ -48,20 +50,20 @@ public class OrdinalDateTimeExp extends DateTimeExp
     {
     ZonedDateTime dateTime = ZonedDateTime.now( context.getClock() );
 
-    Supplier<Integer> snapOrdinal = new Supplier<Integer>()
+    Supplier<Optional<Integer>> snapOrdinal = new Supplier<>()
       {
-      int snapOrdinal = ordinal;
+      Integer snapOrdinal = ordinal;
 
       @Override
-      public Integer get()
+      public Optional<Integer> get()
         {
         try
           {
-          return snapOrdinal;
+          return Optional.ofNullable( snapOrdinal );
           }
         finally
           {
-          snapOrdinal = 0;
+          snapOrdinal = null;
           }
         }
       };
@@ -71,15 +73,21 @@ public class OrdinalDateTimeExp extends DateTimeExp
     switch( canonicalUnit )
       {
       case weeks:
-        dateTime = dateTime.with( t -> t.with( context.getWeekField(), snapOrdinal.get() ) );
+        dateTime = dateTime.with( t -> t.with( context.getWeekField(), snapOrdinal.get().orElse( 1 ) ) );
       }
 
     switch( canonicalUnit )
       {
       case years:
-        dateTime = dateTime.with( t -> t.with( ChronoField.YEAR, snapOrdinal.get() ) );
+        dateTime = dateTime.with( t -> t.with( ChronoField.YEAR, snapOrdinal.get().orElse( 0 ) ) );
       case months:
-        dateTime = dateTime.with( t -> t.with( ChronoField.MONTH_OF_YEAR, snapOrdinal.get() ) );
+        Month currentMonth = dateTime.getMonth();
+        int year = dateTime.getYear();
+        Optional<Integer> requested = snapOrdinal.get();
+        if( currentMonth.ordinal()+1 <= requested.orElse( 1 ) )
+          dateTime = dateTime.with( t -> t.with( ChronoField.YEAR, year - 1 ) );
+
+        dateTime = dateTime.with( t -> t.with( ChronoField.MONTH_OF_YEAR, requested.orElse( 1 ) ) );
       }
 
     switch( canonicalUnit )
@@ -88,15 +96,15 @@ public class OrdinalDateTimeExp extends DateTimeExp
       case months:
       case weeks:
       case days:
-        dateTime = dateTime.with( t -> t.with( ChronoField.DAY_OF_MONTH, snapOrdinal.get() ) );
+        dateTime = dateTime.with( t -> t.with( ChronoField.DAY_OF_MONTH, snapOrdinal.get().orElse( 1 ) ) );
       case hours:
-        dateTime = dateTime.with( t -> t.with( ChronoField.HOUR_OF_DAY, snapOrdinal.get() ) );
+        dateTime = dateTime.with( t -> t.with( ChronoField.HOUR_OF_DAY, snapOrdinal.get().orElse( 0 ) ) );
       case minutes:
-        dateTime = dateTime.with( t -> t.with( ChronoField.MINUTE_OF_HOUR, snapOrdinal.get() ) );
+        dateTime = dateTime.with( t -> t.with( ChronoField.MINUTE_OF_HOUR, snapOrdinal.get().orElse( 0 ) ) );
       case seconds:
-        dateTime = dateTime.with( t -> t.with( ChronoField.SECOND_OF_MINUTE, snapOrdinal.get() ) );
+        dateTime = dateTime.with( t -> t.with( ChronoField.SECOND_OF_MINUTE, snapOrdinal.get().orElse( 0 ) ) );
       case milliseconds:
-        dateTime = dateTime.with( t -> t.with( ChronoField.MILLI_OF_SECOND, snapOrdinal.get() ) );
+        dateTime = dateTime.with( t -> t.with( ChronoField.MILLI_OF_SECOND, snapOrdinal.get().orElse( 0 ) ) );
       }
 
     return dateTime.toInstant();
