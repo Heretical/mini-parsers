@@ -84,7 +84,7 @@ public class OrdinalDateTimeExp extends DateTimeExp
         Month currentMonth = dateTime.getMonth();
         int year = dateTime.getYear();
         Optional<Integer> requested = snapOrdinal.get();
-        if( currentMonth.ordinal()+1 <= requested.orElse( 1 ) )
+        if( currentMonth.ordinal() + 1 <= requested.orElse( 1 ) )
           dateTime = dateTime.with( t -> t.with( ChronoField.YEAR, year - 1 ) );
 
         dateTime = dateTime.with( t -> t.with( ChronoField.MONTH_OF_YEAR, requested.orElse( 1 ) ) );

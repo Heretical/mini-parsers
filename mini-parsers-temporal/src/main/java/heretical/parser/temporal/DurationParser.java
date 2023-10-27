@@ -16,10 +16,21 @@ import heretical.parser.temporal.grammar.DurationGrammar;
 import org.parboiled.Rule;
 
 /**
+ * The DurationParser class parses strings that represent durations.
+ * <p>
+ * This grammar can distinguish between either ISO-8601 duration strings, like `PT20.345S`, or simplified
+ * natural language duration strings, like `10 days` or `15min`, and resolve them into `java.time.Duration` instances.
+ * <p>
+ * See {@link ISODurationParser} or {@link NaturalDurationParser} for more specific parsers.
+ * <p>
  * This class is not thread-safe.
  */
 public class DurationParser extends BaseTemporalExpressionParser<Duration, DurationExp, DurationGrammar>
   {
+  public DurationParser()
+    {
+    }
+
   public DurationParser( Context context )
     {
     super( context );

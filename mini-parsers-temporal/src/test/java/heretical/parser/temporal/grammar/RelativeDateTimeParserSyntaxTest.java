@@ -14,7 +14,7 @@ import org.junit.Test;
 import static heretical.parser.temporal.grammar.TestDateTimeUtil.*;
 
 /**
- *
+ * Unsupported
  */
 @Ignore
 public class RelativeDateTimeParserSyntaxTest extends DateTimeParserSyntaxTestCase

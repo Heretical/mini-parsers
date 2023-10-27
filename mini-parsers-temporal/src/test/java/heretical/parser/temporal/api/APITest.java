@@ -21,9 +21,13 @@ import heretical.parser.temporal.Context;
 import heretical.parser.temporal.DurationParser;
 import heretical.parser.temporal.ISODurationParser;
 import heretical.parser.temporal.NaturalDurationParser;
+import heretical.parser.temporal.RelativeDateTimeAdjusterParser;
 import heretical.parser.temporal.TemporalResult;
+import heretical.parser.temporal.expression.AdjusterExp;
 import heretical.parser.temporal.expression.DateTimeExp;
 import heretical.parser.temporal.expression.DurationExp;
+import heretical.parser.temporal.util.FixedClockRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static java.time.Duration.ZERO;
@@ -34,7 +38,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class APITest
   {
-  private Context context = new Context();
+  @Rule
+  public FixedClockRule now = new FixedClockRule( "2015-02-10T02:04:30Z" );
+
+  private Context context = new Context( now.clock() );
 
   @Test
   public void absolute()
@@ -89,5 +96,19 @@ public class APITest
     TemporalResult<DurationExp, Duration> result = new NaturalDurationParser( context ).parseOrFail( "PT20.345S" );
 
     assertEquals( ZERO.plus( 2, ChronoUnit.HOURS ), result.getResult() );
+    }
+
+  @Test
+  public void adjuster()
+    {
+    TemporalResult<AdjusterExp, Instant> result = new RelativeDateTimeAdjusterParser( context ).parseOrFail( "-120m@s" );
+
+    TemporalAccessor parsed = DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse( "2015-02-10T02:04:30+00:00" );
+    Instant instant = Instant.ofEpochSecond( parsed.getLong( ChronoField.INSTANT_SECONDS ) )
+      .plusMillis( parsed.getLong( ChronoField.MILLI_OF_SECOND ) );
+
+    instant = instant.minus( 120, ChronoUnit.MINUTES );
+
+    assertEquals( instant, result.getResult() );
     }
   }

@@ -260,7 +260,6 @@ public class DateTimeGrammar extends BaseSyntaxGrammar<DateTimeExp>
     );
     }
 
-
   Rule RelativeLastTerm()
     {
     Var<OffsetDateTimeExp> var = new Var( new OffsetDateTimeExp() );

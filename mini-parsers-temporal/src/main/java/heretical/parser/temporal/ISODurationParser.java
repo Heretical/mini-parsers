@@ -12,10 +12,31 @@ import heretical.parser.temporal.grammar.DurationGrammar;
 import org.parboiled.Rule;
 
 /**
+ * The ISODurationParser class parses strings that represent durations in ISO-8601 formats.
+ * <p/>
+ * Where an ISO duration format would look like the following:
  *
+ * <pre>
+ *   PT20.345S
+ *   +PT20.345S
+ *   -PT20.345S // negated duration
+ * </pre>
+ * This class is not thread-safe.
  */
 public class ISODurationParser extends DurationParser
   {
+  /**
+   * Creates a new ISODurationParser instance.
+   */
+  public ISODurationParser()
+    {
+    }
+
+  /**
+   * Creates a new ISODurationParser instance.
+   *
+   * @param context of type Context
+   */
   public ISODurationParser( Context context )
     {
     super( context );

@@ -27,8 +27,14 @@ import org.slf4j.LoggerFactory;
 public abstract class BaseTemporalExpressionParser<R, E extends Expression, G extends BaseParser<E>>
   {
   private static final Logger LOG = LoggerFactory.getLogger( BaseTemporalExpressionParser.class );
-  protected Context context;
+
+  private final Context context;
   private Rule grammar;
+
+  public BaseTemporalExpressionParser()
+    {
+    this( new Context() );
+    }
 
   public BaseTemporalExpressionParser( Context context )
     {

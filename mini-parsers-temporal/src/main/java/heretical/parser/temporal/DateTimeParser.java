@@ -19,6 +19,10 @@ import heretical.parser.temporal.grammar.DateTimeGrammar;
  */
 public abstract class DateTimeParser extends BaseTemporalExpressionParser<Instant, DateTimeExp, DateTimeGrammar>
   {
+  public DateTimeParser()
+    {
+    }
+
   public DateTimeParser( Context context )
     {
     super( context );

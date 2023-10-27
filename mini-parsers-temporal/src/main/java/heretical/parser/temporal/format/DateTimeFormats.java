@@ -184,9 +184,9 @@ public class DateTimeFormats
     {
     // these guys are not thread safe
     DateTimePatternGrammar parser = Parboiled.createParser( DateTimePatternGrammar.class );
-    ParseRunner runner = new BasicParseRunner<>( parser.DateTimeRoot() );
+    ParseRunner<?> runner = new BasicParseRunner<>( parser.DateTimeRoot() );
 
-    ParsingResult result = runner.run( dateFormat );
+    ParsingResult<?> result = runner.run( dateFormat );
 
     LinkedList<Object> list = new LinkedList<>();
 
@@ -386,19 +386,19 @@ public class DateTimeFormats
     }
 
   public static final Comparator<String> longToShort = ( lhs, rhs ) ->
-  {
-  lhs = lhs.replace( "/'", "" );
-  rhs = rhs.replace( "/'", "" );
+    {
+    lhs = lhs.replace( "/'", "" );
+    rhs = rhs.replace( "/'", "" );
 
-  int lhsLen = lhs.length();
-  int rhsLen = rhs.length();
-  int len = rhsLen - lhsLen;
+    int lhsLen = lhs.length();
+    int rhsLen = rhs.length();
+    int len = rhsLen - lhsLen;
 
-  if( len != 0 )
-    return len;
+    if( len != 0 )
+      return len;
 
-  return lhs.compareTo( rhs );
-  };
+    return lhs.compareTo( rhs );
+    };
 
   static Map<String, DateTimeParser> patternMap = new TreeMap<>( longToShort );
 
