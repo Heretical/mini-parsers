@@ -9,7 +9,7 @@
 dependencies {
 
   implementation group: 'org.parboiled', name: 'parboiled-java', version: parboiledVersion
-  implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
 
+  testCompile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
   testRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
 }

@@ -18,16 +18,12 @@ import org.parboiled.Rule;
 import org.parboiled.parserunners.ParseRunner;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public abstract class BaseTemporalExpressionParser<R, E extends Expression, G extends BaseParser<E>>
   {
-  private static final Logger LOG = LoggerFactory.getLogger( BaseTemporalExpressionParser.class );
-
   private final Context context;
   private Rule grammar;
 
@@ -86,11 +82,7 @@ public abstract class BaseTemporalExpressionParser<R, E extends Expression, G ex
     TemporalResult<E, R> parseResult = parse( string );
 
     if( parseResult.hasErrors() )
-      {
-      LOG.warn( parseResult.prettyPrintErrors() );
-
       throw new ParserSyntaxException( parseResult );
-      }
 
     return parseResult;
     }

@@ -24,8 +24,6 @@ import org.parboiled.Parboiled;
 import org.parboiled.parserunners.BasicParseRunner;
 import org.parboiled.parserunners.ParseRunner;
 import org.parboiled.support.ParsingResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
@@ -82,8 +80,6 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
  */
 public class DateTimeFormats
   {
-  private static final Logger LOG = LoggerFactory.getLogger( DateTimeFormats.class );
-
   public enum Char
     {
       text,
@@ -357,8 +353,7 @@ public class DateTimeFormats
         }
       catch( RuntimeException exception )
         {
-        LOG.error( "failed on pattern: {}", pattern, exception );
-        throw exception;
+        throw new RuntimeException( "failed on pattern: " + pattern, exception );
         }
       }
 

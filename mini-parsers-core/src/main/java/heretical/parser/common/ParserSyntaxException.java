@@ -21,11 +21,11 @@ import org.parboiled.errors.ParseError;
 public class ParserSyntaxException extends RuntimeException
   {
   public static final String SEARCH_PARSE_ERROR = "parser syntax error";
-  private Result result;
-  private List<String> errorMessages;
+  private final Result<?> result;
+  private final List<String> errorMessages;
   private static final DefaultInvalidInputErrorFormatter formatter = new DefaultInvalidInputErrorFormatter();
 
-  public ParserSyntaxException( Result result )
+  public ParserSyntaxException( Result<?> result )
     {
     super( makeMessage( result ) );
     this.result = result;
@@ -35,7 +35,7 @@ public class ParserSyntaxException extends RuntimeException
   public ParserSyntaxException( List<String> errorMessages )
     {
     super( makeMessage( errorMessages ) );
-
+    this.result = null;
     this.errorMessages = errorMessages;
     }
 
@@ -81,7 +81,7 @@ public class ParserSyntaxException extends RuntimeException
     return String.format( "%s: %s", SEARCH_PARSE_ERROR, errors );
     }
 
-  private static String getSyntaxError( Result result )
+  private static String getSyntaxError( Result<?> result )
     {
     return ErrorUtils.printParseErrors( result.getParsingResult() );
     }
