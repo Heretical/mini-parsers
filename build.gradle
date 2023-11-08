@@ -12,7 +12,6 @@ plugins {
 
 apply from: 'etc/dependencyVersions.gradle'
 apply from: 'etc/version.gradle'
-apply from: "etc/s3Upload.gradle"
 
 allprojects {
 
@@ -21,29 +20,13 @@ allprojects {
 
   repositories {
     mavenCentral()
-    maven {url = 'https://repository.apache.org'}
   }
 
   group = 'io.heretical'
   version = releaseVersion
 }
 
-project.ext.distDir = null
-
-task assemble {
-  doFirst {
-    println "Assembling version: ${releaseVersion}"
-  }
-}
-
-task prepareDist() {
-  project.distDir = file( "${rootDir}/build/dist" )
-  doLast {
-    mkdir( distDir )
-  }
-}
-
-ext.copyright = '<i>Copyright &#169; 2018-2021 Chris K Wensel. All Rights Reserved.</i>'
+ext.copyright = '<i>Copyright &#169; 2018-2023 Chris K Wensel. All Rights Reserved.</i>'
 
 subprojects {
 
@@ -61,11 +44,8 @@ subprojects {
     }
   }
 
-  javadoc.dependsOn << prepareDist
-
   javadoc {
     title = "Mini Parsers ${releaseVersion}"
-    destinationDir = file( "${distDir}/javadoc/${project.name}" )
 
     failOnError = false
 
@@ -119,24 +99,6 @@ subprojects {
     ignoreFailures = !System.getProperty( 'test.haltonerror', "true" ).equals( "true" )
   }
 
-  assemble.dependsOn << prepareDist
-
-  assemble.doLast {
-
-    copy {
-      into "${distDir}/lib/${archivesBaseName}"
-      from( configurations.compile.resolvedConfiguration.firstLevelModuleDependencies
-        .collect {dep ->
-        dep.moduleArtifacts.collect {it.file}
-      } )
-    }
-
-    copy {
-      into distDir
-      from configurations.default.allArtifacts.files
-    }
-  }
-
   // publish wips via publishAllPublicationsToGitHubPackagesRepository
   publishing {
     repositories {
@@ -154,8 +116,6 @@ subprojects {
       maven( MavenPublication ) {
         artifact sourcesJar
         artifact javadocJar
-        artifact testsJar
-        artifact testSourcesJar
 
         from components.java
 
@@ -192,27 +152,6 @@ subprojects {
   }
 }
 
-task allJavadoc( type: Javadoc, dependsOn: subprojects.javadoc ) {
-
-  title = "Mini-Parsers ${releaseVersion}"
-  destinationDir = file( "${distDir}/javadoc/all/" )
-
-  source subprojects.javadoc.source
-  classpath = rootProject.files( subprojects.javadoc.classpath )
-
-  failOnError = false
-
-  configure( options ) {
-    linkSource = true
-    encoding = "UTF8"
-    bottom = copyright
-    links = [
-      'http://docs.oracle.com/javase/7/docs/api/',
-      'http://junit.sourceforge.net/javadoc/'
-    ]
-  }
-}
-
 // publish releases via publishToSonatype closeAndReleaseSonatypeStagingRepository
 nexusPublishing {
   repositories {
@@ -224,116 +163,4 @@ nexusPublishing {
       password = repoPassword ?: System.getenv( "MCR_PASSWORD" )
     }
   }
-}
-
-task prepareRelease( type: Copy, dependsOn: [':prepareDist', 'project:build', ':allJavadoc'] ) {
-
-  s3UploadDocs.dependsOn << prepareRelease
-  s3UploadArtifacts.dependsOn << prepareRelease
-
-  // copy dist and apply any analytics scripts
-  def analytics = System.getProperty( 'publish.docs.analytics', '' )
-
-  from "${distDir}/javadoc/"
-  into "${s3UploadDocs.source}/javadoc"
-
-  filter {line ->
-    line.replaceAll( "</body>", "${analytics}\n</body>" )
-  }
-}
-
-prepareRelease.doLast {
-  logger.info( 'built all artifacts' )
-}
-
-task clean {
-  doLast {
-    delete buildDir
-  }
-}
-task buildDist( dependsOn: prepareRelease ) {
-  doLast {
-    copy {
-      from 'CHANGES.txt'
-      from 'README.txt'
-      from 'apl.txt'
-      from 'LICENSE.txt'
-      into distDir
-    }
-  }
-}
-
-task buildPackage( type: Tar, dependsOn: buildDist ) {
-
-  description = "package current build, does not run tests"
-
-  destinationDir = file( s3UploadArtifacts.source )
-  baseName = "${rootProject.name}-${releaseVersion}"
-  compression = "GZIP"
-
-  into( baseName ) {
-    from distDir
-  }
-}
-
-task buildLatestMeta( dependsOn: buildPackage ) {
-
-  s3UploadArtifacts.dependsOn << buildLatestMeta
-
-  ext.latestArchivePath = null
-  ext.latestReleaseTagPath = null
-  ext.latestPropertiesPath = null
-}
-
-buildLatestMeta.doLast {
-
-  def destination = s3UploadArtifacts.source
-  def releaseTar = buildPackage.archivePath.name
-  def releaseURL = "http://${s3UploadArtifacts.destination}${releaseTar}"
-
-  latestArchivePath = file( destination, 'latest.txt' )
-  latestArchivePath.write( releaseURL )
-
-  latestReleaseTagPath = file( destination, 'latest-tag.txt' )
-  latestReleaseTagPath.write( "${releaseTag}" )
-
-  latestPropertiesPath = file( destination, 'latest.properties' )
-  latestPropertiesPath.write( "${rootProject.name}.release.version=${releaseVersion}\n" +
-    "${rootProject.name}.release.major=${majorVersion}\n" +
-    "${rootProject.name}.release.minor=${minorVersion}\n" +
-    "${rootProject.name}.release.build=${buildNumber}\n" +
-    "${rootProject.name}.release.commit=${currentCommit}\n" +
-    "${rootProject.name}.release.tag=${releaseTag}\n" +
-    "${rootProject.name}.release.name=${releaseTar}\n" +
-    "${rootProject.name}.release.url=${releaseURL}"
-  )
-
-  latestJSONPath = new File( destination, 'latest.json' )
-  latestJSONPath.write( """\
-{
-  "${rootProject.name}": {
-    "release": {
-      "name": "${releaseTar}",
-      "url": "${releaseURL}",
-      "version": "${releaseVersion}",
-      "major": "${majorVersion}",
-      "minor": "${minorVersion}",
-      "build": "${buildNumber}",
-      "commit": "${currentCommit}",
-      "tag": "${releaseTag}"
-    },
-    "docs": {
-      "userguide": {
-        "url": "http://${s3UploadDocs.destination}userguide/"
-      },
-      "api": {
-        "url": "http://${s3UploadDocs.destination}javadoc/",
-        "names": [
-          "${rootProject.name}-core"
-        ]
-      }
-    }
-  }
-}"""
-  )
 }
