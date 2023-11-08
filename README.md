@@ -39,7 +39,7 @@ WIP release maven coordinates can be found at:
 
 * https://github.com/orgs/Heretical/packages?repo_name=mini-parsers
 
-This library requires Java 8 and the parsing functionality is dependent on [Parboiled](https://github.com/sirthias/parboiled/wiki).
+This library requires Java 11 and the parsing functionality is dependent on [Parboiled](https://github.com/sirthias/parboiled/wiki).
 
 ## Usage
 
@@ -147,11 +147,13 @@ Context context = new Context();
 
 RelativeDateTimeAdjusterParser parser = new RelativeDateTimeAdjusterParser( context );
 
-java.time.Instant hourAgo = parser.parseOrFail( "-60m" ).getResult();
+java.time.Instant hourAgo = parser.parseOrFail( "60m" ).getResult();
 
-java.time.Instant hourAgoOnTheHour = parser.parseOrFail( "-1h@h" ).getResult();
+java.time.Instant alsoHourAgo = parser.parseOrFail( "-60m" ).getResult();
 
-java.time.Instant weekAgoToday = parser.parseOrFail( "-7d@d" ).getResult();
+java.time.Instant hourAgoOnTheHour = parser.parseOrFail( "1h@h" ).getResult();
+
+java.time.Instant weekAgoToday = parser.parseOrFail( "7d@d" ).getResult();
 
 java.time.Instant beginningOfCurrentWeek = parser.parseOrFail( "@w0" ).getResult(); // depends on locale
 
